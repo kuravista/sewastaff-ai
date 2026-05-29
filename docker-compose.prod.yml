@@ -1,0 +1,75 @@
+services:
+  app:
+    build: ./backend
+    env_file: .env
+    environment:
+      WAHA_BASE_URL: http://app-waha-1:3000
+    ports:
+      - "127.0.0.1:8020:8000"
+    depends_on:
+      - postgres
+      - redis
+    logging: &json-logging
+      driver: json-file
+      options:
+        max-size: "50m"
+        max-file: "5"
+    restart: unless-stopped
+    networks:
+      - default
+      - waha_net
+
+  worker:
+    build: ./backend
+    command: python -m app.workers.waha_ws_listener
+    env_file: .env
+    environment:
+      WAHA_BASE_URL: http://app-waha-1:3000
+    depends_on:
+      - postgres
+      - redis
+    logging: *json-logging
+    restart: unless-stopped
+    networks:
+      - default
+      - waha_net
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "127.0.0.1:3020:3000"
+    env_file: frontend/.env
+    logging: *json-logging
+    restart: unless-stopped
+
+  postgres:
+    image: pgvector/pgvector:pg16
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    env_file: .env
+    restart: unless-stopped
+    networks:
+      default:
+        aliases:
+          - sewastaff-postgres
+
+  redis:
+    image: redis:7-alpine
+    volumes:
+      - redisdata:/data
+    command: redis-server --save 60 1 --loglevel warning
+    restart: unless-stopped
+    networks:
+      default:
+        aliases:
+          - sewastaff-redis
+
+networks:
+  default:
+  waha_net:
+    external: true
+    name: app_default
+
+volumes:
+  pgdata:
+  redisdata:

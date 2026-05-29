@@ -1,0 +1,18 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+	--color-primary: #7C3AED;
+	--color-primary-light: #EDE9FE;
+	--color-primary-dark: #5B21B6;
+	--color-ink: #111827;
+	--color-muted: #6B7280;
+	font-family: 'Inter', sans-serif;
+	color: var(--color-ink);
+	background: #ffffff;
+}
+
+body { margin: 0; min-height: 100vh; background: linear-gradient(180deg, #fff 0%, #fafafa 100%); }
+button, input, textarea, select { font: inherit; }

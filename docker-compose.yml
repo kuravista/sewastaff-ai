@@ -1,0 +1,57 @@
+services:
+  app:
+    build: ./backend
+    env_file: .env
+    ports: ["8000:8000"]
+    depends_on: [postgres, redis, waha]
+    logging: &json-logging
+      driver: json-file
+      options:
+        max-size: "50m"
+        max-file: "5"
+
+  worker:
+    build: ./backend
+    command: python -m app.workers.waha_ws_listener
+    env_file: .env
+    depends_on: [postgres, redis]
+    logging: *json-logging
+
+  frontend:
+    build: ./frontend
+    ports: ["3000:3000"]
+    env_file: frontend/.env
+    logging: *json-logging
+
+  postgres:
+    image: postgres:16-alpine
+    volumes: ["pgdata:/var/lib/postgresql/data"]
+    env_file: .env
+
+  redis:
+    image: redis:7-alpine
+    volumes: ["redisdata:/data"]
+    command: redis-server --save 60 1 --loglevel warning
+
+  waha:
+    image: devlikeapro/waha-plus:latest
+    ports: ["3121:3000"]
+    volumes: ["wahadata:/app/.waha/sessions"]
+    environment:
+      WHATSAPP_DEFAULT_ENGINE: GOWS
+      WAHA_PRINT_QR: "false"
+
+  caddy:
+    image: caddy:2.11-alpine
+    ports: ["80:80", "443:443"]
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
+
+volumes:
+  pgdata:
+  redisdata:
+  wahadata:
+  caddy_data:
+  caddy_config:
