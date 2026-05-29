@@ -1,11 +1,5 @@
 name = "sewastaff-ai"
 compatibility_date = "2026-05-29"
 
-[assets]
-directory = ".svelte-kit/cloudflare"
-
-[build]
-command = "npm run build"
-
-[build.upload]
-format = "service-worker"
+[site]
+bucket = ".svelte-kit/cloudflare"
