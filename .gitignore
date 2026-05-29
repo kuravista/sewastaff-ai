@@ -33,6 +33,8 @@ frontend/.svelte-kit/
 frontend/build/
 frontend/.vercel/
 frontend/.cloudflare/
+frontend/.wrangler/
+.wrangler/
 
 # Data
 *.db
