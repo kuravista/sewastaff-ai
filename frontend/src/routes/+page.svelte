@@ -133,7 +133,7 @@
 							<p class="text-sm font-semibold text-gray-500 mb-3">💡 Role dengan kemampuan mirip:</p>
 							<div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
 								{#each searchSuggestions as s}
-								<a href="/staff/{s.id}" class="bg-white border border-gray-200 rounded-xl p-4 flex gap-3 hover:shadow-md transition-shadow cursor-pointer no-underline text-inherit">
+								<a href="/staff/{s.slug}" class="bg-white border border-gray-200 rounded-xl p-4 flex gap-3 hover:shadow-md transition-shadow cursor-pointer no-underline text-inherit">
 									<div class="text-3xl">{s.avatar_emoji || '🤖'}</div>
 									<div class="flex-1 min-w-0">
 										<h4 class="font-bold text-gray-900 truncate">{s.name}</h4>
