@@ -1,4 +1,5 @@
 name = "sewastaff-ai"
+compatibility_date = "2026-05-29"
 
 [assets]
 directory = ".svelte-kit/cloudflare"
