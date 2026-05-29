@@ -1,5 +1,0 @@
-name = "sewastaff-ai"
-compatibility_date = "2026-05-29"
-
-[site]
-bucket = ".svelte-kit/cloudflare"
